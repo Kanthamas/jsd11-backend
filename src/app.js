@@ -1,9 +1,14 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import { router as apiRoutes } from "./routes/index.js";
+import { limiter } from "./middlewares/rateLimiter.js";
 
 export const app = express();
+
+// Global middleware
+app.use(helmet());
 
 const corsOptions = {
   origin: [
@@ -16,6 +21,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use(limiter);
 
 app.use(express.json());
 
