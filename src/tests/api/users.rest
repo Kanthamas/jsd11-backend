@@ -40,3 +40,32 @@ Content-Type: application/json
     "password": "12345678",
     "role": "user"
 }
+
+### Ask AI
+POST http://localhost:3000/api/v2/users/auth/ai/ask 
+Content-Type: application/json
+
+{
+    "question": "Who are admins?",
+    "topK": 5
+}
+
+### POST Login a user
+POST  http://localhost:3000/api/v2/users/auth/cookie/login
+Content-Type: application/json
+
+{
+    "email": "rag4@example.com", 
+    "password": "12345678"
+}
+
+### POST request to create a new user 
+POST http://localhost:3000/api/v2/users
+Content-Type: application/json
+
+{
+    "username": "rag5",
+    "email": "rag5@example.com",
+    "password": "12345678",
+    "role": "admin"
+}

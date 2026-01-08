@@ -1,6 +1,7 @@
 import { users } from "../../mock-db/users.js";
 import { embedText, generateText } from "../../services/gemini.client.js";
 import { User } from "./users.model.js";
+import { queueEmbedUserById } from "./users.embedding.js";
 
 // 🟡 API v1
 // ❌ route handler: get all users (mock)
@@ -113,6 +114,9 @@ export const createUser2 = async (req, res, next) => {
 
     const safe = doc.toObject();
     delete safe.password;
+
+    // Embedding
+    queueEmbedUserById(doc._id);
 
     return res.status(201).json({
       success: true,
@@ -233,10 +237,9 @@ export const askUsers2 = async (req, res, next) => {
     let answer = null;
 
     try {
-    
       answer = await generateText({ prompt });
     } catch (genError) {
-      console.error(`Gemini generation failed: ${genError?.message}`);
+      console.error(`Gemini generation failed: ${genError}`);
     }
 
     return res.status(200).json({
